@@ -91,7 +91,7 @@ Az alábbi végpontok biztosítják a felhasználók, csapatok és feladatok kez
 
 ### Csapatok (Teams)
 
-- **GET /teams**
+- **GET /teams?page?name**
   - Leírás: Az összes csapat listázása.
   - Válasz: Lista a csapatokról.
   - Jogosultság: Csak admin.
@@ -120,7 +120,7 @@ Az alábbi végpontok biztosítják a felhasználók, csapatok és feladatok kez
 
 ### Feladatok (Tasks)
 
-- **GET /tasks**
+- **GET /tasks?title?status?teamId**
   - Leírás: Az összes feladat listázása.
   - Válasz: Lista a feladatok állapotáról, kiadott felhasználók szerint.
   - Jogosultság: Csak a csapat tagjai láthatják a saját feladataikat.

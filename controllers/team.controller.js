@@ -4,13 +4,13 @@ const TeamModel = require("../models/team.model.js")
 module.exports = class TasksController{
     static async getAllTeams(req,res,next){
         try {
-            const name = req.query.name
-            let data = await TeamModel.find({},"name")
-            if(name){
-                data = data.filter(data=>{
-                    return data.name.toLowerCase().includes(name.toLowerCase())
-                })
-            }
+            const {page = 0, name} = req.query
+            const documentCount = 10
+
+            let filters  = {}    
+            if(name) filters.name = new RegExp(`${name}`,'i')
+            
+            const data = await TeamModel.find(filters,"name",).skip(page*documentCount).limit(documentCount)
             res.json(data)
         } catch (error) {
             res.status(500).json({message: error.message})

@@ -1,22 +1,29 @@
 const TaskModel = require("../models/task.model")
+const mongoose = require("mongoose")
 
 module.exports = class TaskController{
     
-    static async getAllTasks(req,res){
+    static async getAllTasks(req, res) {
         try {
-            const title = req.query.title
-            const status = req.query.status
-            const teamId = req.query.teamId
-            let data = await TaskModel.find()
-            if(title)
-                data = data.filter(data => data.title.toLowerCase().includes(title.toLowerCase()))
-            if(status)
-                data = data.filter(data => data.status.toLowerCase().includes(status.toLowerCase()))
-            if(teamId)
-                data = data.filter(data => data.team_id===teamId)
-            res.json(data)
+            const { title, status, team_id, page = 0 } = req.query
+            const documentCount = 10
+    
+            let filters = {}
+            if (title) filters.title = new RegExp(title, 'i')
+            if (status) filters.status = status
+            if (team_id) {
+                if (mongoose.Types.ObjectId.isValid(team_id)) {
+                    filters.team_id = team_id
+                } else {
+                    return res.status(400).json({ message: "Invalid team_id format" })
+                }
+            }
+    
+            const data = await TaskModel.find(filters).skip(page * documentCount).limit(documentCount)
+    
+            res.json(data);
         } catch (error) {
-            res.status(500).json({message:error.message})
+            res.status(500).json({ message: error.message })
         }
     }
 

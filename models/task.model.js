@@ -27,7 +27,7 @@ const Schema = new mongoose.Schema({
     },
     team_id:{
         required: true,
-        type: String
+        type: mongoose.Schema.Types.ObjectId
     },
     creator_id:{
         required: true,
