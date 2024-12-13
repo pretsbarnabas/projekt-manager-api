@@ -14,38 +14,38 @@ Az API célja, hogy felhasználók, csapatok és feladatok kezelésére szolgál
 
 | Mező neve   | Típus        | Leírás                                      |
 |-------------|--------------|---------------------------------------------|
-| `id`        | String       | Egyedi azonosító (UUID)                    |
+| `id`        | ObjectID       | Egyedi azonosító (UUID)                    |
 | `username`  | String       | Felhasználónév                              |
 | `email`     | String       | Felhasználó email címe                      |
 | `password`  | String       | Jelszó (hash-elt formában tárolva)          |
 | `created_at`| DateTime     | A felhasználó létrehozásának időpontja      |
 | `updated_at`| DateTime     | Az utolsó módosítás időpontja              |
-| `team_id`   | [String]       | A csapatok, amelyhez a felhasználó tartozik (ha van ilyen) |
+| `team_id`   | [ObjectID]       | A csapatok, amelyhez a felhasználó tartozik (ha van ilyen) |
 
 #### Csapatok (Teams) Kollekció
 
 | Mező neve   | Típus        | Leírás                                      |
 |-------------|--------------|---------------------------------------------|
-| `id`        | String       | Egyedi azonosító (UUID)                    |
+| `id`        | ObjectID       | Egyedi azonosító (UUID)                    |
 | `name`      | String       | A csapat neve                               |
 | `created_at`| DateTime     | A csapat létrehozásának időpontja           |
 | `updated_at`| DateTime     | Az utolsó módosítás időpontja              |
-| `lead_id`   | [String]       | A csapat vezetőinek felhasználói ID-ja (a csapat adminisztrátorai) |
-| `members`   | [String]     | A csapat tagjainak felhasználói ID-ja (idővel bővülhet) |
+| `lead_id`   | [ObjectID]       | A csapat vezetőinek felhasználói ID-ja (a csapat adminisztrátorai) |
+| `members`   | [ObjectID]     | A csapat tagjainak felhasználói ID-ja (idővel bővülhet) |
 
 #### Feladatok (Tasks) Kollekció
 
 | Mező neve   | Típus        | Leírás                                      |
 |-------------|--------------|---------------------------------------------|
-| `id`        | String       | Egyedi azonosító (UUID)                    |
+| `id`        | ObjectID       | Egyedi azonosító (UUID)                    |
 | `title`     | String       | A feladat címe                              |
 | `description`| String      | A feladat leírása                           |
 | `status`    | String       | A feladat állapota (`pending`, `in_progress`, `completed`) |
-| `assigned_to`| [String]      | A feladatot teljesítő felhasználók ID-ja     |
+| `assigned_to`| [ObjectID]      | A feladatot teljesítő felhasználók ID-ja     |
 | `created_at`| DateTime     | A feladat létrehozásának időpontja          |
 | `updated_at`| DateTime     | Az utolsó módosítás időpontja              |
-| `team_id`   | String       | A csapat, amelyhez a feladat tartozik      |
-| `creator_id`| String       | A feladatot létrehozó felhasználó ID-ja     |
+| `team_id`   | ObjectID       | A csapat, amelyhez a feladat tartozik      |
+| `creator_id`| ObjectID       | A feladatot létrehozó felhasználó ID-ja     |
 
 #### Kapcsolatok:
 
@@ -62,7 +62,7 @@ Az alábbi végpontok biztosítják a felhasználók, csapatok és feladatok kez
 
 ### Felhasználók (Users)
 
-- **GET /users**
+- **GET /users?username?team_id**
   - Leírás: Az összes felhasználó listázása.
   - Válasz: Lista a felhasználókról.
   - Jogosultság: Csak admin.
