@@ -5,9 +5,10 @@ import * as tools from "../tools/tools"
 module.exports = class TasksController{
     static async getAllTeams(req:any,res:any,next:any){
         try {
-            let {page = 0, name, fields, minCreateDate, maxCreateDate, minUpdateDate, maxUpdateDate} = req.query
+            let {page = 0, limit=10, name, fields, minCreateDate, maxCreateDate, minUpdateDate, maxUpdateDate} = req.query
 
-            const documentCount = 10
+            limit = Number.parseInt(limit)
+            
             const allowedFields: string[] = ["_id","name","created_at","updated_at","lead_id","members"]
 
             let filters: {name?:RegExp} = {}    
@@ -55,8 +56,8 @@ module.exports = class TasksController{
                     new Date(maxUpdateDate)
                 ]}}},
                 {$project: projection},
-                {$skip: page*documentCount},
-                {$limit: documentCount}
+                {$skip: page*limit},
+                {$limit: limit}
             ])
 
             res.json(data)

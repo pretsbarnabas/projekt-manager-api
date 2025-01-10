@@ -7,8 +7,9 @@ module.exports = class TaskController{
     
     static async getAllTasks(req:any, res:any) {
         try {
-            let { title, status, team_id, page = 0, fields, minCreateDate, maxCreateDate, minUpdateDate, maxUpdateDate} = req.query
-            const documentCount = 10
+            let { title, limit=10, status, team_id, page = 0, fields, minCreateDate, maxCreateDate, minUpdateDate, maxUpdateDate} = req.query
+
+            limit = Number.parseInt(limit)
     
             const allowedFields: string[] = ["_id","title","description","status","assigned_to","created_at","updated_at","team_id","creator_id"]
             let filters: {title?:RegExp,status?:string,team_id?:string} = {}
@@ -63,8 +64,8 @@ module.exports = class TaskController{
                     new Date(maxUpdateDate)
                 ]}}},
                 {$project: projection},
-                {$skip: page*documentCount},
-                {$limit: documentCount}
+                {$skip: page*limit},
+                {$limit: limit}
             ])
     
             res.json(data);
