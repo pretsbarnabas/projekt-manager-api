@@ -6,6 +6,8 @@ const taskRoutes = require("./routes/tasks.routes")
 
 const connectionString = process.env.DATABASE_URL
 
+if(!connectionString) throw new Error("No connection string defined")
+
 mongoose.connect(connectionString)
 
 const database = mongoose.connection
