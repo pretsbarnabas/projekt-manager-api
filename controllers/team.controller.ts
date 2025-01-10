@@ -1,20 +1,20 @@
-const TeamModel = require("../models/team.model.js")
+const TeamModel = require("../models/team.model")
 
 
 module.exports = class TasksController{
-    static async getAllTeams(req,res,next){
+    static async getAllTeams(req:any,res:any,next:any){
         try {
             let {page = 0, name, fields} = req.query
 
             const documentCount = 10
-            const allowedFields = ["_id","name","created_at","updated_at","lead_id","members"]
+            const allowedFields: string[] = ["_id","name","created_at","updated_at","lead_id","members"]
 
-            let filters  = {}    
+            let filters: {name?:RegExp} = {}    
             
             if(name) filters.name = new RegExp(`${name}`,'i')
                 
-            const requestedFields = fields ? fields.split(",") : allowedFields
-            const validFields = requestedFields.filter(field=>allowedFields.includes(field))
+            const requestedFields: string[] = fields ? fields.split(",") : allowedFields
+            const validFields: string[] = requestedFields.filter(field =>allowedFields.includes(field))
             
             if(validFields.length === 0) return res.status(400).json({error:"Invalid fields requested"})
 
@@ -23,18 +23,18 @@ module.exports = class TasksController{
 
             const data = await TeamModel.find(filters,validFields).skip(page*documentCount).limit(documentCount)
             res.json(data)
-        } catch (error) {
+        } catch (error:any) {
             res.status(500).json({message: error.message})
         }
     }
 
-    static async getTeamById(req,res,next){
+    static async getTeamById(req:any,res:any,next:any){
         try {
             let {fields} = req.query
-            const allowedFields = ["_id","name","created_at","updated_at","lead_id","members"]
+            const allowedFields: string[] = ["_id","name","created_at","updated_at","lead_id","members"]
 
-            const requestedFields = fields ? fields.split(",") : allowedFields
-            const validFields = requestedFields.filter(field=>allowedFields.includes(field))
+            const requestedFields: string[] = fields ? fields.split(",") : allowedFields
+            const validFields: string[] = requestedFields.filter(field =>allowedFields.includes(field))
 
             if(validFields.length === 0) return res.status(400).json({error:"Invalid fields requested"})
             
@@ -47,23 +47,23 @@ module.exports = class TasksController{
             else{
                 res.status(404).send()
             }
-        } catch (error) {
+        } catch (error:any) {
             res.status(500).json({message:error.message})
         }
     }
 
 
-    static async createTeam(req,res,next){
+    static async createTeam(req:any,res:any,next:any){
         const data = new TeamModel(req.body)
         try {
             const dataToSave = await data.save()
             res.status(201).json(dataToSave)
-        } catch (error) {
+        } catch (error:any) {
             res.status(400).json({message:error.message})
         }
     }
 
-    static async deleteTeamById(req,res,next){
+    static async deleteTeamById(req:any,res:any,next:any){
         try {
             const id = req.params.id
             const data = await TeamModel.findByIdAndDelete(id)
@@ -73,12 +73,12 @@ module.exports = class TasksController{
             else{
                 res.status(404).send()
             }
-        } catch (error) {
+        } catch (error:any) {
             res.status(400).json({message:error.message})
         }
     }
 
-    static async patchTeamById(req,res,next){
+    static async patchTeamById(req:any,res:any,next:any){
         try {
             const id = req.params.id
             const updatedData = req.body
@@ -90,7 +90,7 @@ module.exports = class TasksController{
             else{
                 res.status(404).send()
             }
-        } catch (error) {
+        } catch (error:any) {
             res.status(400).json({message:error.message})
         }
     }

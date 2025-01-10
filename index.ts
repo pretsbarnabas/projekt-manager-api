@@ -12,7 +12,7 @@ mongoose.connect(connectionString)
 
 const database = mongoose.connection
 
-database.on("error",(error)=>{
+database.on("error",(error:any)=>{
     console.log(error)
 })
 

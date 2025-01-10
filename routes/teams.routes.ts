@@ -1,5 +1,5 @@
 const express = require("express");
-const TeamController = require("../controllers/team.controller.js")
+const TeamController = require("../controllers/team.controller")
 
 const router = express.Router();
 

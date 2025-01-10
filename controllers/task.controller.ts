@@ -1,14 +1,14 @@
-const TaskModel = require("../models/task.model")
 const mongoose = require("mongoose")
+const TaskModel = require("../models/task.model")
 
 module.exports = class TaskController{
     
-    static async getAllTasks(req, res) {
+    static async getAllTasks(req:any, res:any) {
         try {
             const { title, status, team_id, page = 0 } = req.query
             const documentCount = 10
     
-            let filters = {}
+            let filters: {title?:RegExp,status?:string,team_id?:string} = {}
             if (title) filters.title = new RegExp(title, 'i')
             if (status) filters.status = status
             if (team_id) {
@@ -22,12 +22,12 @@ module.exports = class TaskController{
             const data = await TaskModel.find(filters).skip(page * documentCount).limit(documentCount)
     
             res.json(data);
-        } catch (error) {
+        } catch (error:any) {
             res.status(500).json({ message: error.message })
         }
     }
 
-    static async getTaskById(req,res){
+    static async getTaskById(req:any,res:any){
         try {
             const data = await TaskModel.findById(req.params.id)
             if(data){
@@ -36,23 +36,23 @@ module.exports = class TaskController{
             else{
                 res.status(404).send()
             }
-        } catch (error) {
+        } catch (error:any) {
             res.status(500).json({message:error.message})
         }
     }
 
     
-    static async createTask(req,res){
+    static async createTask(req:any,res:any){
         const data = new TaskModel(req.body)
         try {
             const dataToSave = await data.save()
             res.status(201).json(dataToSave)
-        } catch (error) {
+        } catch (error:any) {
             res.status(400).json({message:error.message})
         }
     }
 
-    static async deleteTaskById(req,res){
+    static async deleteTaskById(req:any,res:any){
         try {
             const id = req.params.id
             const data = await TaskModel.findByIdAndDelete(id)
@@ -62,12 +62,12 @@ module.exports = class TaskController{
             else{
                 res.status(404).send()
             }
-        } catch (error) {
+        } catch (error:any) {
             res.status(400).json({message:error.message})
         }
     }
 
-    static async patchTaskById(req,res){
+    static async patchTaskById(req:any,res:any){
         try {
             const id = req.params.id
             const updatedData = req.body
@@ -79,7 +79,7 @@ module.exports = class TaskController{
             else{
                 res.status(404).send()
             }
-        } catch (error) {
+        } catch (error:any) {
             res.status(400).json({message:error.message})
         }
     }
