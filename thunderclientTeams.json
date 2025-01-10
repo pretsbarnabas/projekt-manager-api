@@ -1,0 +1,93 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "projects/teams",
+    "collectionId": "a15c480c-2411-4043-8426-8eedc74f1256",
+    "dateExported": "2025-01-10T10:26:10.624Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "479efa0c-7330-4634-b9c0-313e9a8116ce",
+            "colId": "a15c480c-2411-4043-8426-8eedc74f1256",
+            "containerId": "",
+            "name": "GET ALL",
+            "url": "http://localhost:3000/teams?page=0&limit=5",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-12-13T07:59:42.035Z",
+            "modified": "2025-01-10T10:25:31.925Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "page",
+                    "value": "0",
+                    "isPath": false
+                },
+                {
+                    "name": "limit",
+                    "value": "5",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "de3e6aab-94c1-4d03-87b4-4b06850c9bdc",
+            "colId": "a15c480c-2411-4043-8426-8eedc74f1256",
+            "containerId": "",
+            "name": "POST",
+            "url": "http://localhost:3000/teams",
+            "method": "POST",
+            "sortNum": 15000,
+            "created": "2024-12-13T08:00:57.396Z",
+            "modified": "2025-01-10T10:17:11.279Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"_id\": \"675beaa2e1a7c7059f18774b\",\n  \"name\": \"Test\",\n  \"created_at\": \"2024-01-10T09:30:00\",\n  \"updated_at\": \"2024-12-01T14:45:00\",\n  \"lead_id\": [\n    \"user_001\",\n    \"user_002\"\n  ]\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "6a130d8a-574b-4a73-99e3-c13c587a765f",
+            "colId": "a15c480c-2411-4043-8426-8eedc74f1256",
+            "containerId": "",
+            "name": "GET /:id",
+            "url": "http://localhost:3000/teams/675beaa2e1a7c7059f18774b",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-12-13T08:00:05.081Z",
+            "modified": "2024-12-13T08:06:51.108Z",
+            "headers": []
+        },
+        {
+            "_id": "29d6c4ac-d12c-4cd7-aa66-5d93c1c38aed",
+            "colId": "a15c480c-2411-4043-8426-8eedc74f1256",
+            "containerId": "",
+            "name": "PATCH /:id",
+            "url": "http://localhost:3000/teams/675beaa2e1a7c7059f18774b",
+            "method": "PATCH",
+            "sortNum": 40000,
+            "created": "2024-12-13T08:01:50.066Z",
+            "modified": "2024-12-13T08:05:47.964Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"members\": [\n    \"user_001\",\n    \"user_002\",\n    \"user_003\"\n  ]\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "6c51d1e6-6c9e-4d22-ab49-6e527bee7048",
+            "colId": "a15c480c-2411-4043-8426-8eedc74f1256",
+            "containerId": "",
+            "name": "DELETE /:id",
+            "url": "http://localhost:3000/teams/675beaa2e1a7c7059f18774b",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2024-12-13T08:02:52.354Z",
+            "modified": "2024-12-13T08:05:16.609Z",
+            "headers": []
+        }
+    ],
+    "ref": "PuO7EqBkOMmfThOlw9RCH6_qaIu903rkcyOTydl0yTURMgkr0N28E4bUPoG8ryN3gE0ty8aDyUXSTxvHVaFJaw"
+}
