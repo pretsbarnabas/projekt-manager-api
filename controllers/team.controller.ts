@@ -1,19 +1,60 @@
 const TeamModel = require("../models/team.model")
+const mongoose = require("mongoose")
 import { Projection } from "../models/projection.interface"
 import * as tools from "../tools/tools"
 
-module.exports = class TasksController{
+class TeamController{
     static async getAllTeams(req:any,res:any,next:any){
         try {
-            let {page = 0, limit=10, name, fields, minCreateDate, maxCreateDate, minUpdateDate, maxUpdateDate} = req.query
+            let {page = 0, limit=10, name, fields, minCreateDate, maxCreateDate, minUpdateDate, maxUpdateDate, lead_id, members} = req.query
 
             limit = Number.parseInt(limit)
-            
+            page = Number.parseInt(page)
+            if(Number.isNaN(limit) || Number.isNaN(page) || limit < 1 || page < 0){
+                return res.status(400).json({error:"Invalid page or limit"})
+            }
+
             const allowedFields: string[] = ["_id","name","created_at","updated_at","lead_id","members"]
 
-            let filters: {name?:RegExp} = {}    
+            let filters: {name?:RegExp,lead_id?:string[],members?:string[]} = {}    
             
             if(name) filters.name = new RegExp(`${name}`,'i')
+            if(lead_id){
+                if(typeof lead_id === "string"){
+                    if (mongoose.Types.ObjectId.isValid(lead_id)) {
+                        filters.lead_id = [lead_id]
+                    } else {
+                        return res.status(400).json({ message: "Invalid lead ID format" })
+                    }
+                }
+                else if(Array.isArray(lead_id)){
+                    filters.lead_id = lead_id.map((id:string) => {
+                        if (mongoose.Types.ObjectId.isValid(id)) {
+                            return id
+                        } else {
+                            return res.status(400).json({ message: "Invalid lead ID format" })
+                        }
+                    })
+                }
+            }
+            if(members){
+                if(typeof members === "string"){
+                    if (mongoose.Types.ObjectId.isValid(members)) {
+                        filters.members = [members]
+                    } else {
+                        return res.status(400).json({ message: "Invalid member ID format" })
+                    }
+                }
+                else if(Array.isArray(members)){
+                    filters.members = members.map((id:string) => {
+                        if (mongoose.Types.ObjectId.isValid(id)) {
+                            return id
+                        } else {
+                            return res.status(400).json({ message: "Invalid member ID format" })
+                        }
+                    })
+                }
+            }
 
             if(!minCreateDate) minCreateDate = new Date(0).toISOString().slice(0,-5)
             if(!maxCreateDate) maxCreateDate = new Date().toISOString().slice(0,-5)
@@ -133,3 +174,5 @@ module.exports = class TasksController{
         }
     }
 }
+
+module.exports = TeamController

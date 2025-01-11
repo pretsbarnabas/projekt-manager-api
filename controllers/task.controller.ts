@@ -3,23 +3,53 @@ const TaskModel = require("../models/task.model")
 import { Projection } from "../models/projection.interface"
 import * as tools from "../tools/tools"
 
-module.exports = class TaskController{
+class TaskController{
     
     static async getAllTasks(req:any, res:any) {
         try {
-            let { title, limit=10, status, team_id, page = 0, fields, minCreateDate, maxCreateDate, minUpdateDate, maxUpdateDate} = req.query
+            let { title, limit=10, status, team_id, page = 0, fields, minCreateDate, maxCreateDate, minUpdateDate, maxUpdateDate, assigned_to, creator_id} = req.query
 
             limit = Number.parseInt(limit)
+            page = Number.parseInt(page)
+            if(Number.isNaN(limit) || Number.isNaN(page) || limit < 1 || page < 0){
+                return res.status(400).json({error:"Invalid page or limit"})
+            }
     
             const allowedFields: string[] = ["_id","title","description","status","assigned_to","created_at","updated_at","team_id","creator_id"]
-            let filters: {title?:RegExp,status?:string,team_id?:string} = {}
+
+            let filters: {title?:RegExp,status?:string,team_id?:string,assigned_to?:string[],creator_id?:string} = {}
             if (title) filters.title = new RegExp(title, 'i')
             if (status) filters.status = status
             if (team_id) {
                 if (mongoose.Types.ObjectId.isValid(team_id)) {
                     filters.team_id = team_id
                 } else {
-                    return res.status(400).json({ message: "Invalid team_id format" })
+                    return res.status(400).json({ message: "Invalid team ID format" })
+                }
+            }
+            if (creator_id) {
+                if (mongoose.Types.ObjectId.isValid(creator_id)) {
+                    filters.creator_id = creator_id
+                } else {
+                    return res.status(400).json({ message: "Invalid creator ID format" })
+                }
+            }
+            if(assigned_to){
+                if(typeof assigned_to === "string"){
+                    if (mongoose.Types.ObjectId.isValid(assigned_to)) {
+                        filters.assigned_to = [assigned_to]
+                    } else {
+                        return res.status(400).json({ message: "Invalid assignedTo ID format" })
+                    }
+                }
+                else if(Array.isArray(assigned_to)){
+                    filters.assigned_to = assigned_to.map((id:string) => {
+                        if (mongoose.Types.ObjectId.isValid(id)) {
+                            return id
+                        } else {
+                            return res.status(400).json({ message: "Invalid assignedTo ID format" })
+                        }
+                    })
                 }
             }
 
@@ -141,3 +171,5 @@ module.exports = class TaskController{
         }
     }
 }
+
+module.exports = TaskController
